@@ -5,12 +5,13 @@ import com.perfulandia.perfulandia.repository.PerfumeRepository;
 import com.perfulandia.perfulandia.service.PerfumeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
+import java.util.*;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
+
 
 public class PerfumeServiceTest {
 
@@ -36,6 +37,17 @@ public class PerfumeServiceTest {
     }
 
     @Test
+    void testObtenerPerfumePorId() {
+        Perfume perfume = new Perfume(1, "Invictus", "Paco Rabanne", "M", "Fresco", 2020, 10, 59990);
+        when(perfumeRepository.findById(1)).thenReturn(perfume);
+
+        Perfume resultado = perfumeService.obtenerPerfumePorId(1);
+        assertEquals("Invictus", resultado.getNombre());
+        verify(perfumeRepository).findById(1);
+    }
+
+
+    @Test
     public void testEliminarPerfume_Exitoso() {
         int id = 1;
         when(perfumeRepository.existsById(id)).thenReturn(true);
@@ -45,4 +57,7 @@ public class PerfumeServiceTest {
         assertTrue(resultado);
         verify(perfumeRepository, times(1)).deleteById(id);
     }
+
+
+
 }
